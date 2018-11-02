@@ -62,7 +62,7 @@ import org.gradle.process.internal.JavaExecHandleBuilder;
 import org.gradle.test.fixtures.file.TestDirectoryProvider;
 import org.gradle.test.fixtures.file.TestFile;
 import org.gradle.testfixtures.internal.NativeServicesTestFixture;
-import org.gradle.tooling.internal.provider.BuildActionResult;
+import org.gradle.launcher.exec.BuildActionResult;
 import org.gradle.tooling.internal.provider.serialization.ClassLoaderDetails;
 import org.gradle.tooling.internal.provider.serialization.DeserializeMap;
 import org.gradle.tooling.internal.provider.serialization.PayloadClassLoaderRegistry;

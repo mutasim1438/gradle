@@ -28,7 +28,7 @@ import org.gradle.internal.service.ServiceRegistry;
 import org.gradle.launcher.cli.action.ExecuteBuildAction;
 import org.gradle.launcher.exec.BuildActionExecuter;
 import org.gradle.launcher.exec.BuildActionParameters;
-import org.gradle.tooling.internal.provider.BuildActionResult;
+import org.gradle.launcher.exec.BuildActionResult;
 
 public class RunBuildAction implements Runnable {
     private final BuildActionExecuter<BuildActionParameters> executer;
