@@ -105,7 +105,7 @@ public class DefaultFileLockManager implements FileLockManager {
         try {
             int port = fileLockContentionHandler.reservePort();
             return new DefaultFileLock(canonicalTarget, options, targetDisplayName, operationDisplayName, port, whenContended);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             lockedFiles.remove(canonicalTarget);
             throw throwAsUncheckedException(t);
         }
@@ -131,7 +131,7 @@ public class DefaultFileLockManager implements FileLockManager {
         private int port;
         private final long lockId;
 
-        public DefaultFileLock(File target, LockOptions options, String displayName, String operationDisplayName, int port, Action<FileLockReleasedSignal> whenContended) throws Throwable {
+        public DefaultFileLock(File target, LockOptions options, String displayName, String operationDisplayName, int port, Action<FileLockReleasedSignal> whenContended) throws Exception {
             this.port = port;
             this.lockId = generator.generateId();
             if (options.getMode() == LockMode.None) {
@@ -159,7 +159,7 @@ public class DefaultFileLockManager implements FileLockManager {
                     fileLockContentionHandler.start(lockId, whenContended);
                 }
                 lockState = lock(options.getMode());
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 // Also releases any locks
                 lockFileAccess.close();
                 throw t;
@@ -206,7 +206,7 @@ public class DefaultFileLockManager implements FileLockManager {
                 lockState = lockFileAccess.markDirty(lockState);
                 action.run();
                 lockState = lockFileAccess.markClean(lockState);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 throw throwAsUncheckedException(t);
             }
         }
@@ -281,7 +281,7 @@ public class DefaultFileLockManager implements FileLockManager {
             return mode;
         }
 
-        private LockState lock(LockMode lockMode) throws Throwable {
+        private LockState lock(LockMode lockMode) throws Exception {
             LOGGER.debug("Waiting to acquire {} lock on {}.", lockMode.toString().toLowerCase(), displayName);
 
             // Lock the state region, with the requested mode
@@ -317,7 +317,7 @@ public class DefaultFileLockManager implements FileLockManager {
                 LOGGER.debug("Lock acquired on {}.", displayName);
                 lock = stateRegionLock;
                 return lockState;
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 stateRegionLock.release();
                 throw t;
             }

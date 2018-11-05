@@ -47,7 +47,7 @@ public class WatchServiceFileWatcherBacking {
     private final AtomicBoolean stopped = new AtomicBoolean();
     private final AtomicReference<SoftReference<Thread>> pollerThreadReference = new AtomicReference<SoftReference<Thread>>();
 
-    private final Action<? super Throwable> onError;
+    private final Action<? super Exception> onError;
     private final WatchServiceRegistrar watchServiceRegistrar;
     private final WatchService watchService;
     private final WatchServicePoller poller;
@@ -69,11 +69,11 @@ public class WatchServiceFileWatcherBacking {
         }
     };
 
-    WatchServiceFileWatcherBacking(Action<? super Throwable> onError, FileWatcherListener listener, WatchService watchService) throws IOException {
+    WatchServiceFileWatcherBacking(Action<? super Exception> onError, FileWatcherListener listener, WatchService watchService) throws IOException {
         this(onError, listener, watchService, new WatchServiceRegistrar(watchService, listener));
     }
 
-    WatchServiceFileWatcherBacking(Action<? super Throwable> onError, FileWatcherListener listener, WatchService watchService, WatchServiceRegistrar watchServiceRegistrar) throws IOException {
+    WatchServiceFileWatcherBacking(Action<? super Exception> onError, FileWatcherListener listener, WatchService watchService, WatchServiceRegistrar watchServiceRegistrar) throws IOException {
         this.onError = onError;
         this.watchServiceRegistrar = watchServiceRegistrar;
         this.watchService = watchService;
@@ -93,7 +93,7 @@ public class WatchServiceFileWatcherBacking {
                                 pumpEvents();
                             } catch (InterruptedException e) {
                                 Thread.currentThread().interrupt();
-                            } catch (Throwable t) {
+                            } catch (Exception t) {
                                 if (!(Throwables.getRootCause(t) instanceof InterruptedException)) {
                                     stop();
                                     onError.execute(t);
